@@ -12,7 +12,7 @@ main(W) :-
     print(List),nl
     ; print("This is an invalid string"),nl
     ).
-  %Doesn't print anything if input is not part of sentence
+  
 sentence --> verb,article,noun.
 article --> ["a"].
 noun -->["set"].
