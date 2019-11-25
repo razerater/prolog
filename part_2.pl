@@ -12,7 +12,7 @@ main(W) :-
     print(List),nl
     ; print("This is an invalid string"),nl
     ).
-  
+
 sentence --> verb,article,noun.
 article --> ["a"].
 noun -->["set"].
@@ -26,7 +26,6 @@ verb -->["find"].
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Commmands for running programming
-
 %%%Using text files as input
 % in=$(cat in1.txt)
 % swipl -q -f test.pl -t main "$in" > out1.txt
@@ -35,6 +34,8 @@ verb -->["find"].
 %%%Using string as input
 % swipl -q -f test.pl -t main "Example Input String"
 
-% ?- split_string("This is an example"," "," ",L)
-% |    .
-% L = ["This", "is", "an", "example"].
+%Example input: Find a set of 3 odd integers that sum to 15
+%Output:3,5,7
+
+%We want ot break up the sentence "Find a set of 3 odd integers that sum to 15" as:
+% sent("Find a set of") I("3 odd integers") -> I(O("3 odd")) pronoun("that") Op("sum")  prep("to") Number("15")
