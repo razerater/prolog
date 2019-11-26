@@ -1,4 +1,3 @@
-
 main(W) :-
 
   %Parsing input which is a list containg a single string Ex: ["Input goes here"]
@@ -12,11 +11,14 @@ main(W) :-
     print(List),nl
     ; print("This is an invalid string"),nl
     ).
-
-sentence --> verb,article,noun.
-article --> ["a"].
-noun -->["set"].
-verb -->["find"].
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% sentence --> verb,article,noun.
+% article --> ["a"].
+% noun -->["set"].
+% verb -->["find"].
+%%%Use
+%swipl -q -f test.pl -t main "find a set"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   % print(L).
   % format('~s\n', W).
 
@@ -33,9 +35,26 @@ verb -->["find"].
 
 %%%Using string as input
 % swipl -q -f test.pl -t main "Example Input String"
+%swipl -q -f test.pl -t main "find a set of 3 odd integers that sum to 15"
+
 
 %Example input: Find a set of 3 odd integers that sum to 15
 %Output:3,5,7
 
 %We want ot break up the sentence "Find a set of 3 odd integers that sum to 15" as:
-% sent("Find a set of") I("3 odd integers") -> I(O("3 odd")) pronoun("that") Op("sum")  prep("to") Number("15")
+% sentence("Find a set of") I("3 odd integers") -> I(O("3 odd")) pronoun("that") Op("sum")  preposition("to") number("15")
+%sentence broken down with sent_phrase, integer_phrase,pronoun, op,preposition,number
+
+sentence --> sent_phrase,integer_phrase,pronoun,op,preposition,number.
+sent_phrase --> verb,article,noun, preposition.
+integer_phrase --> number, int_property, noun.
+integer_phrase --> number, int_property,conjuction,number, int_property,noun.
+pronoun --> ["that"].
+op --> ["multiply"] | ["sum"].
+preposition --> ["to"] | ["of"].
+int_property --> ["even"] | ["odd"].
+conjuction  --> ["and"].
+article --> ["a"].
+noun --> ["set"] | ["integers"].
+verb --> ["find"].
+number --> ["3"] | ["15"] | ["120"].
