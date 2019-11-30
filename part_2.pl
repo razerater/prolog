@@ -38,6 +38,34 @@ main(W) :-
 %swipl -q -f test.pl -t main "find a set of 3 odd integers that sum to 15"
 
 
+% some clauses to help us:
+isEven(X) :-
+  integer(X),
+  X mod 2 =:= 0.
+
+isOdd(X) :-
+  integer(X),
+  X mod 2 =:= 1.
+
+isBoth(X) :-
+  integer(X).
+
+sumTo([], 0).
+sumTo([H|T], X) :-
+  Y is X-H,
+  sumTo(T, Y).
+
+mulTo([], 1).
+mulTo([H|T], X) :-
+  Y is X/H,
+  sumTo(T, Y).
+
+naturalNumber(0).
+naturalNumber(X):-
+  naturalNumber(Y),
+  X is Y+1.
+
+
 %Example input: Find a set of 3 odd integers that sum to 15
 %Output:3,5,7
 
