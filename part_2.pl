@@ -1,5 +1,3 @@
-main() :- true.
-
 main(W) :-
 
   %Parsing input which is a list containg a single string Ex: ["Input goes here"]
@@ -11,7 +9,7 @@ main(W) :-
   %If and Else statement. Prints out list if it matches sentence parse else invalid.
   (sentence(List,[]) ->
     print(List),nl
-    ; print("This is an invalid string"),nl
+    ; format("Invalid String"), nl
     ).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % sentence --> verb,article,noun.
@@ -97,4 +95,4 @@ article --> ["a"].
 noun --> ["set"] | ["integers"].
 verb --> ["find"].
 number --> ["3"] | ["15"] | ["120"].
-% naturalNumber(X) --> 
+% naturalNumber(X) -->
