@@ -1,3 +1,4 @@
+[library(dcg/basics)].
 main(W) :-
 
   %Parsing input which is a list containg a single string Ex: ["Input goes here"]
@@ -7,18 +8,46 @@ main(W) :-
   split_string(Sent," "," ",List),
 
   %If and Else statement. Prints out list if it matches sentence parse else invalid.
-  (phrase(sentence,List) ->
+
+  (phrase(sentenceSum,List) ->
+    %Extracting number from phrase
     phrase(number,ListNum),
     atomic_list_concat(ListNum,'',Lis1),
     atom_string(Lis1,Char1),
     number_codes(Num,Char1),
+    %Extracting sum from phrase
     phrase(sum,ListSum),
     atomic_list_concat(ListSum,'',Lis2),
     atom_string(Lis2,Char2),
     number_codes(Sum,Char2),
-    format("Number:~d Sum:~d\n",[Num,Sum])
-    % print(Sum),nl
-    ; format("Invalid String"), nl
+
+    phrase(opSum, OpList),
+    atomic_list_concat(OpList,'',Operation),
+    opToWithSize(Operation,Sum,[1,5,9],Num),
+
+
+
+
+    format("Number:~d Sum:~d Operation:~s\n",[Num,Sum, Operation])
+
+      % print(List),nl
+    ;phrase(sentenceMult,List) ->
+      phrase(number,ListNum),
+      atomic_list_concat(ListNum,'',Lis1),
+      atom_string(Lis1,Char1),
+      number_codes(Num,Char1),
+      %Extracting sum from phrase
+      phrase(multiply,ListMult),
+      atomic_list_concat(ListMult,'',Lis2),
+      atom_string(Lis2,Char2),
+      number_codes(Multiply,Char2),
+
+      phrase(opMult, OpList),
+      atomic_list_concat(OpList,'',Operation),
+      % opToWithSize(Operation,Sum,[1,5,9],Num),
+
+      format("Number:~d Sum:~d Operation:~s\n",[Num,Multiply, Operation])
+    ;format("Invalid String"), nl
     ).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % sentence --> verb,article,noun.
@@ -48,6 +77,14 @@ main(W) :-
 
 
 % some clauses to help us:
+% digit(D)-->
+%   [D],
+%   { code_type(D,digit)}.
+%
+% digit_weight(W)-->
+%   [D],
+%   { code_type(D,digit(W))}.
+
 isEven(X) :-
   integer(X),
   X mod 2 =:= 0.
@@ -102,6 +139,7 @@ mulToWithSize(N, [X | Tail], Size) :-
   mulToWithSize(Y, Tail, Z).
 
 
+
 opToWithSize(add, 0, [], 0).
 opToWithSize(add, N, [X | Tail], Size) :-
   between(1, N, X),
@@ -138,6 +176,7 @@ opToWithSize(mul, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
   opToWithSize(add, Y, Tail, NewNumEvens, NewNumOdds, NewNumBoth).
 
 
+
 %Example input: Find a set of 3 odd integers that sum to 15
 %Output:3,5,7
 %Input: Find a set of 2 even integers that sum to 6
@@ -149,19 +188,53 @@ opToWithSize(mul, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
 % sentenceWithEven --> sent_phrase,integer_phrase_even,pronoun,op,preposition,number.
 % integer_phrase_even --> number, "even", noun, .
 
+%Need to create another sentence phrase for multiply
+%Example if we have: sum in our sentence then we will get multiply because it is the first thing in the DCG
+% sentenceSum --> sent_phrase,integer_phrase,pronoun,opSum,preposition,sum.
+% sentenceMult --> sent_phrase,integer_phrase,pronoun,opMult,preposition,multiply.
+% sent_phrase --> verb,article,noun, preposition.
+% integer_phrase --> number, int_property, noun.
+% integer_phrase --> number, int_property,conjuction,number, int_property,noun.
+% pronoun --> ["that"].
+% opSum --> ["sum"].
+% opMult --> ["multiply"].
+% preposition --> ["to"] | ["of"].
+% int_property --> ["even"] | ["odd"].
+% conjuction  --> ["and"].
+% article --> ["a"].
+% noun --> ["set"] | ["integers"].
+% verb --> ["Find"].
+% number --> ["4"];["3"].
+% sum --> ["15"].
+% multiply --> ["15"].
 
-sentence --> sent_phrase,integer_phrase,pronoun,op,preposition,sum.
+
+
+
+
+
+
+
+
+
+sent(N) --> verb,size(N).
+sentenceSum(N,S) --> sent_phrase,size(N), int_property, noun,pronoun,opSum,preposition,sum(S).
+sentenceMult(N,M) --> sent_phrase,size(N), int_property, noun,pronoun,opMult,preposition,multiply(M).
 sent_phrase --> verb,article,noun, preposition.
-integer_phrase --> number, int_property, noun.
-integer_phrase --> number, int_property,conjuction,number, int_property,noun.
+% integer_phrase --> size(N), int_property, noun.
+% integer_phrase --> size(N), int_property,conjuction,number, int_property,noun.
 pronoun --> ["that"].
-op --> ["multiply"] | ["sum"].
+opSum --> ["sum"].
+opMult --> ["multiply"].
 preposition --> ["to"] | ["of"].
 int_property --> ["even"] | ["odd"].
 conjuction  --> ["and"].
 article --> ["a"].
 noun --> ["set"] | ["integers"].
 verb --> ["Find"].
-number --> ["3"].
-sum --> ["15"].
-% naturalNumber(X) -->
+size(N) -->
+  integer(N).
+sum(S) -->
+  integer(S).
+multiply(M) -->
+  integer(M).
