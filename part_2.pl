@@ -88,38 +88,54 @@ printList([X|Tail]) :-
 
 sumToWithSize(0, [], Size) :- Size =:= 0.
 sumToWithSize(N, [X | Tail], Size) :-
-    between(1, N, X),
-    Y is N-X,
-    Z is Size-1,
-    sumToWithSize(Y, Tail, Z).
+  between(1, N, X),
+  Y is N-X,
+  Z is Size-1,
+  sumToWithSize(Y, Tail, Z).
 
 mulToWithSize(1, [], Size) :- Size =:= 0.
 mulToWithSize(N, [X | Tail], Size) :-
-    between(2, N, X),
-    Y is N/X,
-    integer(Y),
-    Z is Size-1,
-    mulToWithSize(Y, Tail, Z).
+  between(2, N, X),
+  Y is N/X,
+  integer(Y),
+  Z is Size-1,
+  mulToWithSize(Y, Tail, Z).
 
-opToWithSize(add, 0, [], Size) :- Size =:= 0.
+
+opToWithSize(add, 0, [], 0).
 opToWithSize(add, N, [X | Tail], Size) :-
-    between(1, N, X),
-    Y is N-X,
-    Z is Size-1,
-    opToWithSize(add, Y, Tail, Z).
-opToWithSize(mul, 1, [], Size) :- Size =:= 0.
+  between(1, N, X),
+  Y is N-X,
+  Z is Size-1,
+  opToWithSize(add, Y, Tail, Z).
+opToWithSize(mul, 1, [], 0).
 opToWithSize(mul, N, [X | Tail], Size) :-
-    between(2, N, X),
-    Y is N/X,
-    integer(Y),
-    Z is Size-1,
-    opToWithSize(mul, Y, Tail, Z).
+  between(1, N, X),
+  Y is N/X,
+  integer(Y),
+  Z is Size-1,
+  opToWithSize(mul, Y, Tail, Z).
 
 
-
-% countOdd is countOdd - (Y mod 2)
-% countEven is countEven - (1 - (Y mod 2))
-
+opToWithSize(add, 0, [], 0, 0, 0).
+opToWithSize(add, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
+  between(1, N, X),
+  Y is N - X,
+  NewNumBoth is NumBoth - 1,
+  NewNumEvens is NumEvens - (1 - (Y rem 2)),
+  NewNumOdds is NumOdds - (Y rem 2),
+  % format("~d ~d ~d ~d ~d ~d\n", [N, X, Y, NewNumEvens, NewNumOdds, NewNumBoth]),
+  opToWithSize(add, Y, Tail, NewNumEvens, NewNumOdds, NewNumBoth).
+opToWithSize(mul, 1, [], 0, 0, 0).
+opToWithSize(mul, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
+  between(1, N, X),
+  Y is N / X,
+  integer(Y),
+  NewNumBoth is NumBoth - 1,
+  NewNumEvens is NumEvens - (1 - (Y rem 2)),
+  NewNumOdds is NumOdds - (Y rem 2),
+  % format("~d ~d ~d ~d ~d ~d\n", [N, X, Y, NewNumEvens, NewNumOdds, NewNumBoth]),
+  opToWithSize(add, Y, Tail, NewNumEvens, NewNumOdds, NewNumBoth).
 
 
 %Example input: Find a set of 3 odd integers that sum to 15
