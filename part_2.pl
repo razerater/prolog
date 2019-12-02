@@ -80,6 +80,46 @@ naturalNumber(X):-
   naturalNumber(Y),
   X is Y+1.
 
+printList([]) :-
+  format("\n", []).
+printList([X|Tail]) :-
+  format("~d ", [X]),
+  printList(Tail).
+
+sumToWithSize(0, [], Size) :- Size =:= 0.
+sumToWithSize(N, [X | Tail], Size) :-
+    between(1, N, X),
+    Y is N-X,
+    Z is Size-1,
+    sumToWithSize(Y, Tail, Z).
+
+mulToWithSize(1, [], Size) :- Size =:= 0.
+mulToWithSize(N, [X | Tail], Size) :-
+    between(2, N, X),
+    Y is N/X,
+    integer(Y),
+    Z is Size-1,
+    mulToWithSize(Y, Tail, Z).
+
+opToWithSize(add, 0, [], Size) :- Size =:= 0.
+opToWithSize(add, N, [X | Tail], Size) :-
+    between(1, N, X),
+    Y is N-X,
+    Z is Size-1,
+    opToWithSize(add, Y, Tail, Z).
+opToWithSize(mul, 1, [], Size) :- Size =:= 0.
+opToWithSize(mul, N, [X | Tail], Size) :-
+    between(2, N, X),
+    Y is N/X,
+    integer(Y),
+    Z is Size-1,
+    opToWithSize(mul, Y, Tail, Z).
+
+
+
+% countOdd is countOdd - (Y mod 2)
+% countEven is countEven - (1 - (Y mod 2))
+
 
 
 %Example input: Find a set of 3 odd integers that sum to 15
