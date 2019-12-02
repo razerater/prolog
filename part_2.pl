@@ -213,11 +213,11 @@ mulToWithSize(N, [X | Tail], Size) :-
   mulToWithSize(Y, Tail, Z).
 
 
-
 opToWithSize(sum, 0, [], 0).
 opToWithSize(sum, N, [X | Tail], Size) :-
   between(1, N, X),
   Y is N-X,
+  Size > 0,
   Z is Size-1,
   opToWithSize(sum, Y, Tail, Z).
 opToWithSize(multiply, 1, [], 0).
@@ -225,29 +225,37 @@ opToWithSize(multiply, N, [X | Tail], Size) :-
   between(1, N, X),
   Y is N/X,
   integer(Y),
+  Size > 0,
   Z is Size-1,
   opToWithSize(multiply, Y, Tail, Z).
 
 
 opToWithSize(sum, 0, [], 0, 0, 0).
 opToWithSize(sum, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
-  between(1, N, X),
+  between(0, N, X),
   Y is N - X,
+  NumBoth > 0, % prevents repeatedly adding 0 to list being built
   NewNumBoth is NumBoth - 1,
-  NewNumEvens is NumEvens - (1 - (Y rem 2)),
-  NewNumOdds is NumOdds - (Y rem 2),
+  NewNumEvens is NumEvens - (1 - (X rem 2)),
+  NewNumOdds is NumOdds - (X rem 2),
   % format("~d ~d ~d ~d ~d ~d\n", [N, X, Y, NewNumEvens, NewNumOdds, NewNumBoth]),
   opToWithSize(sum, Y, Tail, NewNumEvens, NewNumOdds, NewNumBoth).
+
+opToWithSize(multiply, 1, [], 0, 0, 0).
 opToWithSize(multiply, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
   between(1, N, X),
   Y is N / X,
   integer(Y),
+  NumBoth > 0, % prevents repeatedly adding 1 to list being built
   NewNumBoth is NumBoth - 1,
-  NewNumEvens is NumEvens - (1 - (Y rem 2)),
-  NewNumOdds is NumOdds - (Y rem 2),
+  NewNumEvens is NumEvens - (1 - (X rem 2)),
+  NewNumOdds is NumOdds - (X rem 2),
   % format("~d ~d ~d ~d ~d ~d\n", [N, X, Y, NewNumEvens, NewNumOdds, NewNumBoth]),
-  opToWithSize(sum, Y, Tail, NewNumEvens, NewNumOdds, NewNumBoth).
+  opToWithSize(multiply, Y, Tail, NewNumEvens, NewNumOdds, NewNumBoth).
 
+example() :-
+  opToWithSize(multiply, 6, L, 1, 1, 2), % should get [1,6]; [2,3]; [3,2]; [6,1]
+  printList(L).
 
 
 %Example input: Find a set of 3 odd integers that sum to 15
