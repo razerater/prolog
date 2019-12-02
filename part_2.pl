@@ -1,3 +1,5 @@
+main() :- true.
+
 main(W) :-
 
   %Parsing input which is a list containg a single string Ex: ["Input goes here"]
@@ -43,6 +45,11 @@ isEven(X) :-
   integer(X),
   X mod 2 =:= 0.
 
+allEven([]).
+allEven([H|T]) :-
+  isEven(H),
+  allEven(T).
+
 isOdd(X) :-
   integer(X),
   X mod 2 =:= 1.
@@ -73,6 +80,10 @@ naturalNumber(X):-
 % sentence("Find a set of") I("3 odd integers") -> I(O("3 odd")) pronoun("that") Op("sum")  preposition("to") number("15")
 %sentence broken down with sent_phrase, integer_phrase,pronoun, op,preposition,number
 
+% sentenceWithEven --> sent_phrase,integer_phrase_even,pronoun,op,preposition,number.
+% integer_phrase_even --> number, "even", noun, .
+
+
 sentence --> sent_phrase,integer_phrase,pronoun,op,preposition,number.
 sent_phrase --> verb,article,noun, preposition.
 integer_phrase --> number, int_property, noun.
@@ -86,3 +97,4 @@ article --> ["a"].
 noun --> ["set"] | ["integers"].
 verb --> ["find"].
 number --> ["3"] | ["15"] | ["120"].
+% naturalNumber(X) --> 
