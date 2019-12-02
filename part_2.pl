@@ -238,7 +238,6 @@ opToWithSize(sum, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
   NewNumOdds is NumOdds - (Y rem 2),
   % format("~d ~d ~d ~d ~d ~d\n", [N, X, Y, NewNumEvens, NewNumOdds, NewNumBoth]),
   opToWithSize(sum, Y, Tail, NewNumEvens, NewNumOdds, NewNumBoth).
-opToWithSize(multiply, 1, [], 0, 0, 0).
 opToWithSize(multiply, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
   between(1, N, X),
   Y is N / X,
