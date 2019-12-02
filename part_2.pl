@@ -93,6 +93,6 @@ int_property --> ["even"] | ["odd"].
 conjuction  --> ["and"].
 article --> ["a"].
 noun --> ["set"] | ["integers"].
-verb --> ["find"].
+verb --> ["Find"].
 number --> ["3"] | ["15"] | ["120"].
 % naturalNumber(X) -->
