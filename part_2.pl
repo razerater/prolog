@@ -9,35 +9,74 @@ main(W) :-
 
   %If and Else statement. Prints out list if it matches sentence parse else invalid.
 
-  (phrase(sentenceSum,List) ->
+  (phrase(sentenceSum4,List) ->
     %Extracting number from phrase
-    phrase(number,ListNum),
+    phrase(two,ListNum),
     atomic_list_concat(ListNum,'',Lis1),
     atom_string(Lis1,Char1),
     number_codes(Num,Char1),
     %Extracting sum from phrase
-    phrase(sum,ListSum),
+    phrase(six,ListSum),
     atomic_list_concat(ListSum,'',Lis2),
     atom_string(Lis2,Char2),
     number_codes(Sum,Char2),
 
     phrase(opSum, OpList),
     atomic_list_concat(OpList,'',Operation),
-    opToWithSize(Operation,Sum,[1,5,9],Num),
+    opToWithSize(Operation,Sum,[2,4],Num),
 
 
 
 
     format("Number:~d Sum:~d Operation:~s\n",[Num,Sum, Operation])
-
-      % print(List),nl
-    ;phrase(sentenceMult,List) ->
-      phrase(number,ListNum),
+    ;phrase(sentenceSum3,List) ->
+      %Extracting number from phrase
+      phrase(four,ListNum),
       atomic_list_concat(ListNum,'',Lis1),
       atom_string(Lis1,Char1),
       number_codes(Num,Char1),
       %Extracting sum from phrase
-      phrase(multiply,ListMult),
+      phrase(three,ListSum),
+      atomic_list_concat(ListSum,'',Lis2),
+      atom_string(Lis2,Char2),
+      number_codes(Sum,Char2),
+
+      phrase(opSum, OpList),
+      atomic_list_concat(OpList,'',Operation),
+      % opToWithSize(Operation,Sum,[2,4],Num),
+
+
+
+
+      format("Number:~d Sum:~d Operation:~s\n",[Num,Sum, Operation])
+    ;phrase(sentenceSum5,List) ->
+      %No Sol
+
+      %Extracting number from phrase
+      phrase(three,ListNum),
+      atomic_list_concat(ListNum,'',Lis1),
+      atom_string(Lis1,Char1),
+      number_codes(Num,Char1),
+      %Extracting sum from phrase
+      phrase(eight,ListSum),
+      atomic_list_concat(ListSum,'',Lis2),
+      atom_string(Lis2,Char2),
+      number_codes(Sum,Char2),
+
+      phrase(opSum, OpList),
+      atomic_list_concat(OpList,'',Operation),
+      % opToWithSize(Operation,Sum,[2,4],Num),
+
+      format("Number:~d Sum:~d Operation:~s\n",[Num,Sum, Operation])
+      % print(List),nl
+
+    ;phrase(sentenceMult7,List) ->
+      phrase(three,ListNum),
+      atomic_list_concat(ListNum,'',Lis1),
+      atom_string(Lis1,Char1),
+      number_codes(Num,Char1),
+      %Extracting sum from phrase
+      phrase(sixfour,ListMult),
       atomic_list_concat(ListMult,'',Lis2),
       atom_string(Lis2,Char2),
       number_codes(Multiply,Char2),
@@ -47,6 +86,41 @@ main(W) :-
       % opToWithSize(Operation,Sum,[1,5,9],Num),
 
       format("Number:~d Sum:~d Operation:~s\n",[Num,Multiply, Operation])
+    ;phrase(sentenceMult8,List) ->
+      phrase(four,ListNum),
+      atomic_list_concat(ListNum,'',Lis1),
+      atom_string(Lis1,Char1),
+      number_codes(Num,Char1),
+      %Extracting sum from phrase
+      phrase(ninefourfive,ListMult),
+      atomic_list_concat(ListMult,'',Lis2),
+      atom_string(Lis2,Char2),
+      number_codes(Multiply,Char2),
+
+      phrase(opMult, OpList),
+      atomic_list_concat(OpList,'',Operation),
+      % opToWithSize(Operation,Sum,[1,5,9],Num),
+      format("Number:~d Multiply:~d Operation:~s\n",[Num,Multiply, Operation])
+    ;phrase(sentenceSumBoth6,List) ->
+      phrase(two,ListNum1),
+      atomic_list_concat(ListNum1,'',Lis1),
+      atom_string(Lis1,Char1),
+      number_codes(Num1,Char1),
+
+      phrase(two,ListNum2),
+      atomic_list_concat(ListNum2,'',Lis2),
+      atom_string(Lis2,Char2),
+      number_codes(Num2,Char2),
+      %Extracting sum from phrase
+      phrase(twoSix,ListSum),
+      atomic_list_concat(ListSum,'',LisS),
+      atom_string(LisS,Char3),
+      number_codes(Sum,Char3),
+
+      phrase(opSum, OpList),
+      atomic_list_concat(OpList,'',Operation),
+
+      format("Number1:~d Number2:~d Sum:~d Operation:~s\n",[Num1,Num2,Sum, Operation])
     ;format("Invalid String"), nl
     ).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -140,32 +214,32 @@ mulToWithSize(N, [X | Tail], Size) :-
 
 
 
-opToWithSize(add, 0, [], 0).
-opToWithSize(add, N, [X | Tail], Size) :-
+opToWithSize(sum, 0, [], 0).
+opToWithSize(sum, N, [X | Tail], Size) :-
   between(1, N, X),
   Y is N-X,
   Z is Size-1,
-  opToWithSize(add, Y, Tail, Z).
-opToWithSize(mul, 1, [], 0).
-opToWithSize(mul, N, [X | Tail], Size) :-
+  opToWithSize(sum, Y, Tail, Z).
+opToWithSize(multiply, 1, [], 0).
+opToWithSize(multiply, N, [X | Tail], Size) :-
   between(1, N, X),
   Y is N/X,
   integer(Y),
   Z is Size-1,
-  opToWithSize(mul, Y, Tail, Z).
+  opToWithSize(multiply, Y, Tail, Z).
 
 
-opToWithSize(add, 0, [], 0, 0, 0).
-opToWithSize(add, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
+opToWithSize(sum, 0, [], 0, 0, 0).
+opToWithSize(sum, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
   between(1, N, X),
   Y is N - X,
   NewNumBoth is NumBoth - 1,
   NewNumEvens is NumEvens - (1 - (Y rem 2)),
   NewNumOdds is NumOdds - (Y rem 2),
   % format("~d ~d ~d ~d ~d ~d\n", [N, X, Y, NewNumEvens, NewNumOdds, NewNumBoth]),
-  opToWithSize(add, Y, Tail, NewNumEvens, NewNumOdds, NewNumBoth).
-opToWithSize(mul, 1, [], 0, 0, 0).
-opToWithSize(mul, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
+  opToWithSize(sum, Y, Tail, NewNumEvens, NewNumOdds, NewNumBoth).
+opToWithSize(multiply, 1, [], 0, 0, 0).
+opToWithSize(multiply, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
   between(1, N, X),
   Y is N / X,
   integer(Y),
@@ -173,7 +247,7 @@ opToWithSize(mul, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
   NewNumEvens is NumEvens - (1 - (Y rem 2)),
   NewNumOdds is NumOdds - (Y rem 2),
   % format("~d ~d ~d ~d ~d ~d\n", [N, X, Y, NewNumEvens, NewNumOdds, NewNumBoth]),
-  opToWithSize(add, Y, Tail, NewNumEvens, NewNumOdds, NewNumBoth).
+  opToWithSize(sum, Y, Tail, NewNumEvens, NewNumOdds, NewNumBoth).
 
 
 
@@ -191,10 +265,56 @@ opToWithSize(mul, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
 %Need to create another sentence phrase for multiply
 %Example if we have: sum in our sentence then we will get multiply because it is the first thing in the DCG
 % sentenceSum --> sent_phrase,integer_phrase,pronoun,opSum,preposition,sum.
-% sentenceMult --> sent_phrase,integer_phrase,pronoun,opMult,preposition,multiply.
-% sent_phrase --> verb,article,noun, preposition.
+sentenceSum3 --> sent_phrase,four,odd,noun,pronoun,opSum,preposition,three.
+sentenceSum4 --> sent_phrase,two,even,noun,pronoun,opSum,preposition,six.
+sentenceSum5 --> sent_phrase,three,odd,noun,pronoun,opSum,preposition,eight.
+sentenceSumBoth6 --> sent_phrase,two,even,conjuction,two,odd,noun,pronoun,opSum,preposition,twoSix.
+sentenceMult7 --> sent_phrase,three,even,noun,pronoun,opMult,preposition,sixfour.
+sentenceMult8 --> sent_phrase,four,odd,noun,pronoun,opMult,preposition,ninefourfive.
+sentenceMultBoth9 --> sent_phrase,one,even,conjuction,one,odd,noun,pronoun,opSum,preposition,six.
+sentenceMult --> sent_phrase,integer_phrase,pronoun,opMult,preposition,multiply.
+sent_phrase --> verb,article,noun, preposition.
 % integer_phrase --> number, int_property, noun.
 % integer_phrase --> number, int_property,conjuction,number, int_property,noun.
+pronoun --> ["that"].
+opSum --> ["sum"].
+opMult --> ["multiply"].
+preposition --> ["to"] | ["of"].
+even --> ["even"].
+odd-->["odd"].
+conjuction  --> ["and"].
+article --> ["a"].
+noun --> ["set"] | ["integers"].
+verb --> ["Find"].
+one --> ["1"].
+four --> ["4"].
+
+two -->["2"].
+six -->["6"].
+three --> ["3"].
+eight --> ["8"].
+twoSix --> ["26"].
+sixfour --> ["64"].
+ninefourfive --> ["945"].
+
+sum --> ["15"].
+multiply --> ["15"].
+
+
+
+
+
+
+
+
+
+
+% sent(N) --> verb,size(N).
+% sentenceSum(N,S) --> sent_phrase,size(N), int_property, noun,pronoun,opSum,preposition,sum(S).
+% sentenceMult(N,M) --> sent_phrase,size(N), int_property, noun,pronoun,opMult,preposition,multiply(M).
+% sent_phrase --> verb,article,noun, preposition.
+% % integer_phrase --> size(N), int_property, noun.
+% % integer_phrase --> size(N), int_property,conjuction,number, int_property,noun.
 % pronoun --> ["that"].
 % opSum --> ["sum"].
 % opMult --> ["multiply"].
@@ -204,37 +324,9 @@ opToWithSize(mul, N, [X | Tail], NumEvens, NumOdds, NumBoth) :-
 % article --> ["a"].
 % noun --> ["set"] | ["integers"].
 % verb --> ["Find"].
-% number --> ["4"];["3"].
-% sum --> ["15"].
-% multiply --> ["15"].
-
-
-
-
-
-
-
-
-
-
-sent(N) --> verb,size(N).
-sentenceSum(N,S) --> sent_phrase,size(N), int_property, noun,pronoun,opSum,preposition,sum(S).
-sentenceMult(N,M) --> sent_phrase,size(N), int_property, noun,pronoun,opMult,preposition,multiply(M).
-sent_phrase --> verb,article,noun, preposition.
-% integer_phrase --> size(N), int_property, noun.
-% integer_phrase --> size(N), int_property,conjuction,number, int_property,noun.
-pronoun --> ["that"].
-opSum --> ["sum"].
-opMult --> ["multiply"].
-preposition --> ["to"] | ["of"].
-int_property --> ["even"] | ["odd"].
-conjuction  --> ["and"].
-article --> ["a"].
-noun --> ["set"] | ["integers"].
-verb --> ["Find"].
-size(N) -->
-  integer(N).
-sum(S) -->
-  integer(S).
-multiply(M) -->
-  integer(M).
+% size(N) -->
+%   integer(N).
+% sum(S) -->
+%   integer(S).
+% multiply(M) -->
+%   integer(M).
